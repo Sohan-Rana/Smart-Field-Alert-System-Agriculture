@@ -2,6 +2,18 @@
 
 This table is a template. Record real results from your own circuit; do not copy numbers from elsewhere.
 
+## Reference: typical HC-SR501 datasheet values
+
+These are manufacturer-style typical figures for comparison, **not your measurements**. Check the datasheet of your own module.
+
+| Parameter | Typical value |
+|-----------|---------------|
+| Supply voltage | 4.5V - 20V (5V on Arduino) |
+| Detection range | about 3 - 7 m (adjustable with the sensitivity pot) |
+| Detection angle | about 100 - 120 degrees |
+| Output hold time | about 5 s - 300 s (adjustable with the time-delay pot) |
+| Warm-up time | about 30 - 60 s after power-on |
+
 ## Setup
 
 - Date:
