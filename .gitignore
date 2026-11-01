@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Arduino build output
+build/
+*.hex
+*.elf
+*.bin
+
+# Local notes
+*.log
+node_modules/

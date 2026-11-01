@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Field Alert System — Agri-Tech Solution</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <meta name="description" content="Smart Field Alert System: an Arduino and PIR sensor based project that detects animals or intruders in an agricultural field and alerts the farmer with LEDs and a buzzer.">
   <meta name="theme-color" content="#0a1208">
@@ -33,14 +33,14 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'DM Sans', 'Noto Sans Bengali', sans-serif;
       background: var(--bg);
       color: var(--fg);
       overflow-x: hidden;
       line-height: 1.7;
     }
 
-    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', 'Noto Sans Bengali', serif; }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -862,6 +862,32 @@
       .section { padding: 4rem 1rem; }
     }
 
+    .lang-btn {
+      background: rgba(212, 160, 23, 0.12);
+      border: 1px solid rgba(212, 160, 23, 0.35);
+      color: var(--accent);
+      padding: 5px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .lang-btn:hover { background: rgba(212, 160, 23, 0.22); }
+    .price-input {
+      width: 90px;
+      padding: 6px 8px;
+      background: rgba(10, 18, 8, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--fg);
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .price-input:focus { outline: 2px solid var(--accent); }
+    .cost-total td { font-weight: 700; color: var(--accent); background: rgba(212, 160, 23, 0.06); }
+    .var-link { text-decoration: none; color: inherit; display: block; }
+    .demo-media { width: 100%; border-radius: 12px; border: 1px solid var(--card-border); }
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -920,13 +946,14 @@
       AgriAlert
     </a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#intro">Introduction</a></li>
-      <li><a href="#objectives">Objectives</a></li>
-      <li><a href="#components">Components</a></li>
-      <li><a href="#working">Working</a></li>
-      <li><a href="#circuit">Circuit</a></li>
-      <li><a href="#simulation">Live Sim</a></li>
-      <li><a href="#code">Code</a></li>
+      <li><a href="#intro" data-i18n="nav_intro">Introduction</a></li>
+      <li><a href="#objectives" data-i18n="nav_objectives">Objectives</a></li>
+      <li><a href="#components" data-i18n="nav_components">Components</a></li>
+      <li><a href="#working" data-i18n="nav_working">Working</a></li>
+      <li><a href="#circuit" data-i18n="nav_circuit">Circuit</a></li>
+      <li><a href="#simulation" data-i18n="nav_simulation">Live Sim</a></li>
+      <li><a href="#code" data-i18n="nav_code">Code</a></li>
+      <li><button class="lang-btn" id="langBtn" aria-label="Switch language">বাংলা</button></li>
     </ul>
     <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><i class="fas fa-bars"></i></button>
   </nav>
@@ -942,7 +969,7 @@
       <h1 class="hero-title">
         Smart Field<br><span class="highlight">Alert System</span>
       </h1>
-      <p class="hero-subtitle">
+      <p class="hero-subtitle" data-i18n="hero_sub">
         An Arduino-based smart sensor system for ensuring agricultural field security — 
         detecting animals or intruders and issuing instant alerts.
       </p>
@@ -964,8 +991,8 @@
   <section class="section" id="intro">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-book-open"></i> Introduction to Robotics</div>
-      <h2 class="section-title">What is Robotics?</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="intro_t">What is Robotics?</h2>
+      <p class="section-desc" data-i18n="intro_d">
         Robotics is a technology that uses sensors, controllers, and actuators to perform tasks automatically.
       </p>
     </div>
@@ -1006,11 +1033,56 @@
     </div>
   </section>
 
+
+  <section class="section" id="problem">
+    <div class="reveal">
+      <div class="section-label"><i class="fas fa-exclamation-circle"></i> Problem Statement</div>
+      <h2 class="section-title" data-i18n="prob_t">Why Field Security Matters</h2>
+      <p class="section-desc" data-i18n="prob_d">Crop fields are often unguarded at night, and damage is usually discovered only after it has happened.</p>
+    </div>
+    <div class="intro-grid reveal">
+      <div class="glass-card" style="border-top: 3px solid var(--red-alert);">
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;" data-i18n="prob_1t">Animals and Theft</h3>
+        <p style="color: var(--fg-muted); font-size: 0.92rem;" data-i18n="prob_1d">At night, wild animals or intruders can enter the field and damage or take crops.</p>
+      </div>
+      <div class="glass-card" style="border-top: 3px solid var(--accent);">
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;" data-i18n="prob_2t">Guarding Is Hard</h3>
+        <p style="color: var(--fg-muted); font-size: 0.92rem;" data-i18n="prob_2d">Staying awake all night in an open field is tiring, costs money and can be unsafe.</p>
+      </div>
+      <div class="glass-card" style="border-top: 3px solid var(--green-light);">
+        <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;" data-i18n="prob_3t">Late Discovery</h3>
+        <p style="color: var(--fg-muted); font-size: 0.92rem;" data-i18n="prob_3d">The farmer usually sees the damage in the morning, when it is too late to act.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare">
+    <div class="reveal">
+      <div class="section-label"><i class="fas fa-balance-scale"></i> Comparison</div>
+      <h2 class="section-title" data-i18n="cmp_t">Compared With Common Methods</h2>
+      <p class="section-desc" data-i18n="cmp_d">Where this system helps, and where it is limited, compared with a watchman or a scarecrow.</p>
+    </div>
+    <div class="reveal" style="overflow-x: auto;">
+      <table class="comp-table">
+        <thead>
+          <tr><th>Feature</th><th>Human watchman</th><th>Scarecrow / fence</th><th>This system</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Running cost</td><td style="color: var(--fg-muted);">Wages every month</td><td style="color: var(--fg-muted);">Low</td><td style="color: var(--green-light);">Low, mostly one-time</td></tr>
+          <tr><td>Works at night</td><td style="color: var(--fg-muted);">Yes, but tiring</td><td style="color: var(--fg-muted);">Passive only</td><td style="color: var(--green-light);">Yes, while powered</td></tr>
+          <tr><td>Instant alert</td><td style="color: var(--fg-muted);">Only if awake</td><td style="color: var(--fg-muted);">No alert</td><td style="color: var(--green-light);">Yes, LED + buzzer</td></tr>
+          <tr><td>Needs a person on site</td><td style="color: var(--fg-muted);">Yes</td><td style="color: var(--fg-muted);">No</td><td style="color: var(--green-light);">No (alert is local unless GSM is added)</td></tr>
+          <tr><td>Tells animal from person</td><td style="color: var(--fg-muted);">Yes</td><td style="color: var(--fg-muted);">No</td><td style="color: #ef9a9a;">No (any moving heat source)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section class="section" id="objectives" style="max-width: 900px;">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-bullseye"></i> Objective</div>
-      <h2 class="section-title">Project Objectives</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="obj_t">Project Objectives</h2>
+      <p class="section-desc" data-i18n="obj_d">
         The core goals of this smart system are listed below.
       </p>
     </div>
@@ -1049,8 +1121,8 @@
   <section class="section" id="components">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-tools"></i> Components</div>
-      <h2 class="section-title">Required Components</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="comp_t">Required Components</h2>
+      <p class="section-desc" data-i18n="comp_d">
         The following components are needed to build this project.
       </p>
     </div>
@@ -1118,11 +1190,83 @@
     </div>
   </section>
 
+
+  <section class="section" id="cost">
+    <div class="reveal">
+      <div class="section-label"><i class="fas fa-coins"></i> Cost Estimation</div>
+      <h2 class="section-title" data-i18n="cost_t">Estimated Cost</h2>
+      <p class="section-desc" data-i18n="cost_d">Edit the unit prices to match your local shop. The total updates automatically.</p>
+    </div>
+    <div class="reveal" style="overflow-x: auto;">
+      <table class="comp-table">
+        <thead>
+          <tr><th>Item</th><th>Qty</th><th>Unit price (BDT)</th><th>Total (BDT)</th></tr>
+        </thead>
+        <tbody id="costBody">
+          <tr data-qty="1">
+            <td>Arduino Uno</td>
+            <td>1</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="750" aria-label="Unit price in BDT for Arduino Uno"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="1">
+            <td>PIR Motion Sensor (HC-SR501)</td>
+            <td>1</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="130" aria-label="Unit price in BDT for PIR Motion Sensor (HC-SR501)"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="1">
+            <td>Active Buzzer (5V)</td>
+            <td>1</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="25" aria-label="Unit price in BDT for Active Buzzer (5V)"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="2">
+            <td>LED (red / green)</td>
+            <td>2</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="5" aria-label="Unit price in BDT for LED (red / green)"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="2">
+            <td>220Ω Resistor</td>
+            <td>2</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="2" aria-label="Unit price in BDT for 220Ω Resistor"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="1">
+            <td>Breadboard</td>
+            <td>1</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="120" aria-label="Unit price in BDT for Breadboard"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="1">
+            <td>Jumper Wires (pack)</td>
+            <td>1</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="100" aria-label="Unit price in BDT for Jumper Wires (pack)"></td>
+            <td class="line">0</td>
+          </tr>
+          <tr data-qty="1">
+            <td>USB cable / power supply</td>
+            <td>1</td>
+            <td><input class="price-input" type="number" min="0" step="1" value="150" aria-label="Unit price in BDT for USB cable / power supply"></td>
+            <td class="line">0</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="cost-total"><td colspan="3">Estimated total</td><td id="costTotal">0</td></tr>
+        </tfoot>
+      </table>
+      <p style="color: var(--fg-muted); font-size: 0.85rem; margin-top: 0.8rem;">
+        <i class="fas fa-info-circle" style="margin-right: 6px;"></i>Prices above are rough placeholder estimates, not quotes. Replace them with the prices you actually paid.
+      </p>
+    </div>
+  </section>
+
   <section class="section" id="working" style="max-width: 1000px;">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-cogs"></i> Working Principle</div>
-      <h2 class="section-title">How Does It Work?</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="work_t">How Does It Work?</h2>
+      <p class="section-desc" data-i18n="work_d">
         The step-by-step working process of the system is shown below.
       </p>
     </div>
@@ -1193,8 +1337,8 @@
   <section class="section" id="circuit">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-project-diagram"></i> Circuit Connection</div>
-      <h2 class="section-title">Circuit Diagram</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="circ_t">Circuit Diagram</h2>
+      <p class="section-desc" data-i18n="circ_d">
         Connect the components to Arduino as per the pin mapping below.
       </p>
     </div>
@@ -1342,8 +1486,8 @@
   <section class="section" id="simulation">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-play-circle"></i> Live Simulation</div>
-      <h2 class="section-title">Real-Time Simulation</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="sim_t">Real-Time Simulation</h2>
+      <p class="section-desc" data-i18n="sim_d">
         Click the buttons below to see how the system works. Watch live what happens when an intruder enters the field.
       </p>
     </div>
@@ -1435,11 +1579,21 @@
     </div>
   </section>
 
+
+  <section class="section" id="demo" hidden>
+    <div class="reveal">
+      <div class="section-label"><i class="fas fa-video"></i> Demo</div>
+      <h2 class="section-title" data-i18n="demo_t">Demo</h2>
+      <p class="section-desc" data-i18n="demo_d">The real circuit and the system in action.</p>
+    </div>
+    <div class="two-col reveal" id="demoGrid"></div>
+  </section>
+
   <section class="section" id="code" style="max-width: 900px;">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-code"></i> Arduino Code</div>
-      <h2 class="section-title">Source Code</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="code_t">Source Code</h2>
+      <p class="section-desc" data-i18n="code_d">
         Copy and upload this code to your Arduino board via Arduino IDE.
       </p>
     </div>
@@ -1516,13 +1670,28 @@
 }
       </div>
     </div>
+    <div class="reveal" style="margin-top: 3rem;">
+      <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;" data-i18n="var_t">More Versions</h3>
+      <p style="color: var(--fg-muted); margin-bottom: 1.5rem;" data-i18n="var_d">Two upgraded sketches built on the basic code above.</p>
+      <div class="intro-grid">
+        <a class="var-link" href="https://github.com/Sohan-Rana/Smart-Field-Alert-System-Agriculture/tree/main/arduino/smart_field_alert_ultrasonic" target="_blank" rel="noopener">
+          <div class="glass-card"><h4 style="margin-bottom: 0.5rem;"><i class="fas fa-ruler" style="color: var(--green-light); margin-right: 8px;"></i>PIR + Ultrasonic</h4>
+          <p style="color: var(--fg-muted); font-size: 0.9rem;">Alerts only when motion is detected and the object is closer than a set distance. The buzzer stops after 10 seconds.</p></div>
+        </a>
+        <a class="var-link" href="https://github.com/Sohan-Rana/Smart-Field-Alert-System-Agriculture/tree/main/arduino/smart_field_alert_gsm" target="_blank" rel="noopener">
+          <div class="glass-card"><h4 style="margin-bottom: 0.5rem;"><i class="fas fa-sms" style="color: var(--accent); margin-right: 8px;"></i>GSM SMS Alert</h4>
+          <p style="color: var(--fg-muted); font-size: 0.9rem;">Sends an SMS to the farmer's phone through a SIM800L module, at most once a minute.</p></div>
+        </a>
+      </div>
+      <p style="color: var(--fg-muted); font-size: 0.82rem; margin-top: 1rem;">These two sketches have not been tested on hardware yet. Compile and test them on your own board.</p>
+    </div>
   </section>
 
   <section class="section" id="results">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-chart-bar"></i> Result</div>
-      <h2 class="section-title">Project Results</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="res_t">Project Results</h2>
+      <p class="section-desc" data-i18n="res_d">
         This system successfully accomplishes the following tasks.
       </p>
     </div>
@@ -1557,11 +1726,27 @@
     </div>
   </section>
 
+
+  <section class="section" id="limits" style="max-width: 1000px;">
+    <div class="reveal">
+      <div class="section-label"><i class="fas fa-exclamation-triangle"></i> Limitations</div>
+      <h2 class="section-title" data-i18n="lim_t">Limitations</h2>
+      <p class="section-desc" data-i18n="lim_d">Knowing the limits of the project makes the evaluation honest.</p>
+    </div>
+    <ul class="objective-list reveal">
+      <li><span class="obj-num"><i class="fas fa-ruler-combined"></i></span><div><strong>Limited range and angle</strong><p style="color: var(--fg-muted); font-size: 0.88rem; margin-top: 4px;">One HC-SR501 covers only a small area, so a large field needs several units.</p></div></li>
+      <li><span class="obj-num"><i class="fas fa-question"></i></span><div><strong>Cannot identify what moved</strong><p style="color: var(--fg-muted); font-size: 0.88rem; margin-top: 4px;">A PIR sensor reacts to any moving heat source: animal, person or even a small pet.</p></div></li>
+      <li><span class="obj-num"><i class="fas fa-sun"></i></span><div><strong>False alarms</strong><p style="color: var(--fg-muted); font-size: 0.88rem; margin-top: 4px;">Strong sunlight, hot wind or sudden temperature changes can trigger the sensor. The ultrasonic version reduces this.</p></div></li>
+      <li><span class="obj-num"><i class="fas fa-plug"></i></span><div><strong>Needs power</strong><p style="color: var(--fg-muted); font-size: 0.88rem; margin-top: 4px;">The basic version needs a 5V supply. Remote fields need a battery or solar panel.</p></div></li>
+      <li><span class="obj-num"><i class="fas fa-bell-slash"></i></span><div><strong>Local alert only</strong><p style="color: var(--fg-muted); font-size: 0.88rem; margin-top: 4px;">The farmer must be within hearing or sight distance. Use the GSM version for SMS alerts.</p></div></li>
+    </ul>
+  </section>
+
   <section class="section" id="future" style="max-width: 1000px;">
     <div class="reveal">
       <div class="section-label"><i class="fas fa-rocket"></i> Future Improvement</div>
-      <h2 class="section-title">Scope for Future Development</h2>
-      <p class="section-desc">
+      <h2 class="section-title" data-i18n="fut_t">Scope for Future Development</h2>
+      <p class="section-desc" data-i18n="fut_d">
         This basic system can be further upgraded with advanced features.
       </p>
     </div>
@@ -1610,6 +1795,9 @@
       </p>
       <p style="font-size: 0.82rem; color: rgba(138,158,130,0.6);">
         Bridging agriculture and technology for a smarter future
+      </p>
+      <p style="margin-top: 0.8rem; font-size: 0.85rem;">
+        <a href="https://github.com/Sohan-Rana/Smart-Field-Alert-System-Agriculture" target="_blank" rel="noopener" style="color: var(--green-light);"><i class="fab fa-github" style="margin-right: 6px;"></i>View on GitHub</a>
       </p>
     </div>
   </footer>
@@ -1936,6 +2124,76 @@
       navLinks.classList.remove('open');
       menuBtn.setAttribute('aria-expanded', 'false');
     }));
+
+    /* ================================================
+       Cost calculator
+       ================================================ */
+    function updateCost() {
+      let total = 0;
+      document.querySelectorAll('#costBody tr').forEach(tr => {
+        const qty = Number(tr.dataset.qty) || 0;
+        const price = Math.max(0, parseFloat(tr.querySelector('input').value) || 0);
+        const line = qty * price;
+        tr.querySelector('.line').textContent = line.toLocaleString('en-US');
+        total += line;
+      });
+      document.getElementById('costTotal').textContent = total.toLocaleString('en-US');
+    }
+    document.querySelectorAll('#costBody input').forEach(i => i.addEventListener('input', updateCost));
+    updateCost();
+
+    /* ================================================
+       Demo section: shown only if the media files exist
+       ================================================ */
+    (function () {
+      const grid = document.getElementById('demoGrid');
+      const section = document.getElementById('demo');
+      function reveal(el) {
+        grid.appendChild(el);
+        section.hidden = false;
+        document.querySelectorAll('#demo .reveal').forEach(r => observer.observe(r));
+      }
+      function exists(url) {
+        return fetch(url, { method: 'HEAD' }).then(r => r.ok).catch(() => false);
+      }
+      exists('images/circuit-photo.jpg').then(ok => {
+        if (!ok) return;
+        const img = document.createElement('img');
+        img.src = 'images/circuit-photo.jpg';
+        img.alt = 'Photo of the real Smart Field Alert System circuit';
+        img.className = 'demo-media';
+        img.loading = 'lazy';
+        reveal(img);
+      });
+      exists('images/demo.mp4').then(ok => {
+        if (!ok) return;
+        const v = document.createElement('video');
+        v.src = 'images/demo.mp4';
+        v.controls = true;
+        v.preload = 'metadata';
+        v.className = 'demo-media';
+        reveal(v);
+      });
+    })();
+
+    /* ================================================
+       English / Bangla toggle
+       ================================================ */
+    const BN = {"hero_sub": "কৃষিজমির নিরাপত্তা নিশ্চিত করতে Arduino-ভিত্তিক একটি স্মার্ট সেন্সর সিস্টেম, যা পশু বা অনুপ্রবেশকারী শনাক্ত করে সঙ্গে সঙ্গে সতর্কবার্তা দেয়।", "intro_t": "রোবটিক্স কী?", "intro_d": "রোবটিক্স এমন একটি প্রযুক্তি, যেখানে সেন্সর, কন্ট্রোলার ও অ্যাকচুয়েটর ব্যবহার করে কাজ স্বয়ংক্রিয়ভাবে সম্পন্ন করা হয়।", "obj_t": "প্রকল্পের উদ্দেশ্য", "obj_d": "এই স্মার্ট সিস্টেমের মূল লক্ষ্যগুলো নিচে দেওয়া হলো।", "comp_t": "প্রয়োজনীয় উপকরণ", "comp_d": "এই প্রকল্প তৈরি করতে নিচের উপকরণগুলো লাগবে।", "work_t": "এটি কীভাবে কাজ করে?", "work_d": "সিস্টেমের ধাপে ধাপে কাজের প্রক্রিয়া নিচে দেখানো হলো।", "circ_t": "সার্কিট ডায়াগ্রাম", "circ_d": "নিচের পিন তালিকা অনুযায়ী উপকরণগুলো Arduino-র সঙ্গে যুক্ত করুন।", "sim_t": "রিয়েল-টাইম সিমুলেশন", "sim_d": "সিস্টেম কীভাবে কাজ করে দেখতে নিচের বোতামগুলোতে ক্লিক করুন। মাঠে অনুপ্রবেশকারী ঢুকলে কী ঘটে তা সরাসরি দেখুন।", "code_t": "সোর্স কোড", "code_d": "এই কোডটি কপি করে Arduino IDE দিয়ে আপনার Arduino বোর্ডে আপলোড করুন।", "res_t": "প্রকল্পের ফলাফল", "res_d": "এই সিস্টেম সফলভাবে নিচের কাজগুলো সম্পন্ন করে।", "fut_t": "ভবিষ্যৎ উন্নয়নের সুযোগ", "fut_d": "এই মৌলিক সিস্টেমটিকে আরও উন্নত সুবিধা দিয়ে আপগ্রেড করা যায়।", "nav_intro": "ভূমিকা", "nav_objectives": "উদ্দেশ্য", "nav_components": "উপকরণ", "nav_working": "কার্যপ্রণালী", "nav_circuit": "সার্কিট", "nav_simulation": "লাইভ সিম", "nav_code": "কোড", "prob_t": "কেন মাঠের নিরাপত্তা জরুরি", "prob_d": "ফসলের মাঠ রাতে প্রায়ই অরক্ষিত থাকে, আর ক্ষতি সাধারণত টের পাওয়ার আগেই হয়ে যায়।", "prob_1t": "পশু ও চোরের ঝুঁকি", "prob_1d": "রাতে বন্যপ্রাণী বা অনুপ্রবেশকারী মাঠে ঢুকে ফসলের ক্ষতি করতে পারে।", "prob_2t": "পাহারা দেওয়া কঠিন", "prob_2d": "সারা রাত খোলা মাঠে জেগে থাকা ক্লান্তিকর, খরচসাপেক্ষ এবং ঝুঁকিপূর্ণ।", "prob_3t": "দেরিতে টের পাওয়া", "prob_3d": "কৃষক সাধারণত সকালে ক্ষতি দেখেন, তখন আর কিছু করার থাকে না।", "cmp_t": "প্রচলিত পদ্ধতির সঙ্গে তুলনা", "cmp_d": "পাহারাদার ও প্রচলিত পদ্ধতির তুলনায় এই সিস্টেম কোথায় সুবিধা দেয়, আবার কোথায় সীমাবদ্ধ।", "cost_t": "আনুমানিক খরচ", "cost_d": "দামের ঘরগুলো আপনার এলাকার বাজারদর অনুযায়ী বদলে নিন, মোট খরচ নিজে থেকেই হিসাব হবে।", "lim_t": "সীমাবদ্ধতা", "lim_d": "প্রকল্পটি সৎভাবে মূল্যায়ন করতে এর সীমাবদ্ধতাগুলো জানা দরকার।", "demo_t": "ডেমো", "demo_d": "বাস্তব সার্কিট ও কাজের ভিডিও।", "var_t": "আরও সংস্করণ", "var_d": "মূল কোডের ওপর ভিত্তি করে তৈরি দুটি উন্নত সংস্করণ।"};
+    const langBtn = document.getElementById('langBtn');
+    function setLang(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        if (!el.dataset.en) el.dataset.en = el.textContent.trim();
+        el.textContent = lang === 'bn' && BN[el.dataset.i18n] ? BN[el.dataset.i18n] : el.dataset.en;
+      });
+      document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
+      langBtn.textContent = lang === 'bn' ? 'English' : 'বাংলা';
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+    }
+    langBtn.addEventListener('click', () => {
+      setLang(document.documentElement.lang === 'bn' ? 'en' : 'bn');
+    });
+    try { if (localStorage.getItem('lang') === 'bn') setLang('bn'); } catch (e) {}
   </script>
 </body>
 </html>

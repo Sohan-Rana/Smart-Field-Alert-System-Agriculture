@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="840" viewBox="0 0 480 420" role="img" aria-label="Wiring diagram: PIR sensor, green and red LEDs with 220 ohm resistors, and an active buzzer connected to an Arduino Uno" font-family="Arial, Helvetica, sans-serif">
+          <rect width="480" height="420" fill="#0a1208"/>
+          <title>Wiring diagram: Smart Field Alert System</title>
+          <defs>
+            <linearGradient id="arduinoGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a3a6e"/>
+              <stop offset="100%" stop-color="#0f2850"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Arduino Uno -->
+          <rect x="380" y="30" width="30" height="12" rx="2" fill="#888"/>
+          <rect x="330" y="40" width="130" height="360" rx="10" fill="url(#arduinoGrad)" stroke="#2a5a9e" stroke-width="2"/>
+          <text x="395" y="66" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">ARDUINO UNO</text>
+          <rect x="365" y="170" width="70" height="36" rx="3" fill="#222" stroke="#444"/>
+          <text x="400" y="192" fill="#777" font-size="9" font-family="monospace" text-anchor="middle">ATmega328</text>
+
+          <g font-size="11" font-family="monospace" fill="#d4a017">
+            <circle cx="330" cy="85" r="3"/><text x="340" y="89">D2</text>
+            <circle cx="330" cy="165" r="3"/><text x="340" y="169">D6</text>
+            <circle cx="330" cy="235" r="3"/><text x="340" y="239">D7</text>
+            <circle cx="330" cy="310" r="3"/><text x="340" y="314">D8</text>
+            <circle cx="330" cy="350" r="3" fill="#ff7b72"/><text x="340" y="354" fill="#ff7b72">5V</text>
+            <circle cx="330" cy="375" r="3" fill="#8b949e"/><text x="340" y="379" fill="#8b949e">GND</text>
+          </g>
+
+          <!-- Arduino power pins -->
+          <line x1="330" y1="350" x2="300" y2="350" stroke="#ff7b72" stroke-width="2"/>
+          <text x="294" y="354" fill="#ff7b72" font-size="11" font-weight="700" text-anchor="end">5V</text>
+          <line x1="330" y1="375" x2="300" y2="375" stroke="#8b949e" stroke-width="2"/>
+          <text x="294" y="379" fill="#8b949e" font-size="11" font-weight="700" text-anchor="end">GND</text>
+
+          <!-- PIR sensor -->
+          <rect x="60" y="45" width="90" height="80" rx="8" fill="rgba(45,138,78,0.15)" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="105" y="82" fill="#4ade80" font-size="13" font-weight="700" text-anchor="middle">PIR</text>
+          <text x="105" y="98" fill="#8b949e" font-size="10" text-anchor="middle">HC-SR501</text>
+          <text x="66" y="66" fill="#ff7b72" font-size="9">VCC</text>
+          <text x="66" y="112" fill="#8b949e" font-size="9">GND</text>
+          <text x="144" y="89" fill="#4ade80" font-size="9" text-anchor="end">OUT</text>
+          <line x1="60" y1="63" x2="38" y2="63" stroke="#ff7b72" stroke-width="2"/>
+          <text x="4" y="67" fill="#ff7b72" font-size="11" font-weight="700">5V</text>
+          <line x1="60" y1="109" x2="38" y2="109" stroke="#8b949e" stroke-width="2"/>
+          <text x="4" y="113" fill="#8b949e" font-size="11" font-weight="700">GND</text>
+          <line x1="150" y1="85" x2="330" y2="85" stroke="#4ade80" stroke-width="2"/>
+          <text x="240" y="77" fill="#4ade80" font-size="10" text-anchor="middle">OUT to D2</text>
+
+          <!-- Green LED + resistor (D6) -->
+          <line x1="330" y1="165" x2="210" y2="165" stroke="#4ade80" stroke-width="2"/>
+          <rect x="170" y="157" width="40" height="16" rx="3" fill="#3a2a0a" stroke="#d4a017"/>
+          <text x="190" y="150" fill="#d4a017" font-size="10" text-anchor="middle">220&#937;</text>
+          <line x1="170" y1="165" x2="136" y2="165" stroke="#4ade80" stroke-width="2"/>
+          <circle cx="120" cy="165" r="16" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="1.5"/>
+          <circle cx="120" cy="165" r="7" fill="#4ade80" opacity="0.6" id="circuitGreenLed"/>
+          <text x="98" y="169" fill="#8b949e" font-size="11" text-anchor="end">Green LED</text>
+          <line x1="120" y1="181" x2="120" y2="198" stroke="#8b949e" stroke-width="2"/>
+          <text x="120" y="212" fill="#8b949e" font-size="11" font-weight="700" text-anchor="middle">GND</text>
+
+          <!-- Red LED + resistor (D7) -->
+          <line x1="330" y1="235" x2="210" y2="235" stroke="#ef4444" stroke-width="2"/>
+          <rect x="170" y="227" width="40" height="16" rx="3" fill="#3a2a0a" stroke="#d4a017"/>
+          <text x="190" y="220" fill="#d4a017" font-size="10" text-anchor="middle">220&#937;</text>
+          <line x1="170" y1="235" x2="136" y2="235" stroke="#ef4444" stroke-width="2"/>
+          <circle cx="120" cy="235" r="16" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5"/>
+          <circle cx="120" cy="235" r="7" fill="#ef4444" opacity="0.2" id="circuitRedLed"/>
+          <text x="98" y="239" fill="#8b949e" font-size="11" text-anchor="end">Red LED</text>
+          <line x1="120" y1="251" x2="120" y2="268" stroke="#8b949e" stroke-width="2"/>
+          <text x="120" y="282" fill="#8b949e" font-size="11" font-weight="700" text-anchor="middle">GND</text>
+
+          <!-- Buzzer (D8) -->
+          <line x1="330" y1="310" x2="130" y2="310" stroke="#d4a017" stroke-width="2"/>
+          <rect x="60" y="288" width="70" height="44" rx="6" fill="rgba(212,160,23,0.1)" stroke="#d4a017" stroke-width="1.5"/>
+          <text x="95" y="307" fill="#d4a017" font-size="11" font-weight="700" text-anchor="middle">Buzzer</text>
+          <text x="95" y="322" fill="#8b949e" font-size="9" text-anchor="middle">active, 5V</text>
+          <text x="136" y="304" fill="#d4a017" font-size="12" font-weight="700">+</text>
+          <line x1="95" y1="332" x2="95" y2="350" stroke="#8b949e" stroke-width="2"/>
+          <text x="95" y="364" fill="#8b949e" font-size="11" font-weight="700" text-anchor="middle">GND</text>
+
+          <text x="20" y="408" fill="#8b949e" font-size="10">Labels with the same name (5V, GND) are connected together.</text>
+        </svg>
