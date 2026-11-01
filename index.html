@@ -6,7 +6,13 @@
   <title>Smart Field Alert System — Agri-Tech Solution</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="Smart Field Alert System: an Arduino and PIR sensor based project that detects animals or intruders in an agricultural field and alerts the farmer with LEDs and a buzzer.">
+  <meta name="theme-color" content="#0a1208">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Smart Field Alert System | Arduino Agri-Tech Project">
+  <meta property="og:description" content="Low-cost Arduino + PIR sensor system that protects farm fields from animals and intruders.">
+  <meta property="og:url" content="https://sohan-rana.github.io/Smart-Field-Alert-System-Agriculture/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
   <style>
     :root {
       --bg: #0a1208;
@@ -391,6 +397,7 @@
       border-radius: 50%;
     }
     .code-body {
+      white-space: pre;
       padding: 1.5rem;
       overflow-x: auto;
       font-family: 'Courier New', monospace;
@@ -855,6 +862,46 @@
       .section { padding: 4rem 1rem; }
     }
 
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--fg);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .toast-container { pointer-events: none; }
+
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .menu-btn { display: flex; }
+      .top-nav { padding: 0.8rem 1rem; }
+      .nav-links.open {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem 1.5rem;
+        background: rgba(10, 18, 8, 0.97);
+        border-bottom: 1px solid var(--border);
+      }
+      .code-body { font-size: 0.78rem; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -872,7 +919,7 @@
       <div class="logo-icon"><i class="fas fa-seedling"></i></div>
       AgriAlert
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#objectives">Objectives</a></li>
       <li><a href="#components">Components</a></li>
@@ -881,6 +928,7 @@
       <li><a href="#simulation">Live Sim</a></li>
       <li><a href="#code">Code</a></li>
     </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><i class="fas fa-bars"></i></button>
   </nav>
 
   <section class="hero-section">
@@ -1021,31 +1069,31 @@
             <td style="color: var(--accent); font-weight: 600;">01</td>
             <td><i class="fas fa-microchip" style="color: var(--green-light); margin-right: 8px;"></i>Arduino Uno</td>
             <td>1</td>
-            <td style="color: var(--fg-muted);">Main controller — makes all decisions</td>
+            <td style="color: var(--fg-muted);">Main controller: makes all decisions</td>
           </tr>
           <tr>
             <td style="color: var(--accent); font-weight: 600;">02</td>
-            <td><i class="fas fa-eye" style="color: var(--green-light); margin-right: 8px;"></i>PIR Motion Sensor</td>
+            <td><i class="fas fa-eye" style="color: var(--green-light); margin-right: 8px;"></i>PIR Motion Sensor (HC-SR501)</td>
             <td>1</td>
-            <td style="color: var(--fg-muted);">Detects infrared motion</td>
+            <td style="color: var(--fg-muted);">Detects infrared motion (pins: VCC, OUT, GND)</td>
           </tr>
           <tr>
             <td style="color: var(--accent); font-weight: 600;">03</td>
-            <td><i class="fas fa-ruler" style="color: var(--green-light); margin-right: 8px;"></i>Ultrasonic Sensor</td>
-            <td>1 (Optional)</td>
-            <td style="color: var(--fg-muted);">Measures distance</td>
+            <td><i class="fas fa-volume-up" style="color: var(--green-light); margin-right: 8px;"></i>Active Buzzer (5V)</td>
+            <td>1</td>
+            <td style="color: var(--fg-muted);">Sound alert; works with a simple HIGH/LOW signal</td>
           </tr>
           <tr>
             <td style="color: var(--accent); font-weight: 600;">04</td>
-            <td><i class="fas fa-volume-up" style="color: var(--green-light); margin-right: 8px;"></i>Buzzer</td>
-            <td>1</td>
-            <td style="color: var(--fg-muted);">Sound-based alert</td>
-          </tr>
-          <tr>
-            <td style="color: var(--accent); font-weight: 600;">05</td>
             <td><i class="fas fa-lightbulb" style="color: var(--green-light); margin-right: 8px;"></i>LED (Red / Green)</td>
             <td>2</td>
             <td style="color: var(--fg-muted);">Visual alert and normal status indicator</td>
+          </tr>
+          <tr>
+            <td style="color: var(--accent); font-weight: 600;">05</td>
+            <td><i class="fas fa-grip-lines" style="color: var(--green-light); margin-right: 8px;"></i>220&Omega; Resistor</td>
+            <td>2</td>
+            <td style="color: var(--fg-muted);">One per LED; limits current to protect LED and Arduino pin</td>
           </tr>
           <tr>
             <td style="color: var(--accent); font-weight: 600;">06</td>
@@ -1056,14 +1104,14 @@
           <tr>
             <td style="color: var(--accent); font-weight: 600;">07</td>
             <td><i class="fas fa-plug" style="color: var(--green-light); margin-right: 8px;"></i>Jumper Wires</td>
-            <td>As needed</td>
+            <td>As needed (~15)</td>
             <td style="color: var(--fg-muted);">For connecting components</td>
           </tr>
           <tr>
             <td style="color: var(--accent); font-weight: 600;">08</td>
             <td><i class="fas fa-battery-full" style="color: var(--green-light); margin-right: 8px;"></i>Power Supply</td>
             <td>1</td>
-            <td style="color: var(--fg-muted);">Powers the entire system</td>
+            <td style="color: var(--fg-muted);">USB cable (5V) or 7-12V adapter for the Arduino</td>
           </tr>
         </tbody>
       </table>
@@ -1112,7 +1160,7 @@
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem;" class="reveal">
+    <div class="reveal two-col" style="margin-top: 3rem;">
       <div class="glass-card" style="border-left: 3px solid var(--red-alert);">
         <h4 style="color: var(--red-alert); margin-bottom: 0.8rem; font-size: 1.1rem;">
           <i class="fas fa-exclamation-circle" style="margin-right: 6px;"></i> When Motion is Detected
@@ -1134,6 +1182,12 @@
         </ul>
       </div>
     </div>
+    <div class="glass-card reveal" style="margin-top: 1.5rem; border-left: 3px solid var(--accent);">
+      <p style="font-size: 0.95rem; color: var(--fg-muted); line-height: 1.8;">
+        <strong style="color: var(--accent);"><i class="fas fa-hourglass-half" style="margin-right: 6px;"></i>PIR warm-up:</strong>
+        After power-on the PIR sensor needs about 30 seconds to calibrate. During this time the Arduino blinks the green LED and ignores the sensor, so there are no false alarms at start-up.
+      </p>
+    </div>
   </section>
 
   <section class="section" id="circuit">
@@ -1144,78 +1198,84 @@
         Connect the components to Arduino as per the pin mapping below.
       </p>
     </div>
-    <div class="reveal" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+    <div class="reveal two-col">
       <div class="circuit-board">
-        <svg width="100%" height="420" viewBox="0 0 400 420" style="position: relative; z-index: 1;">
-          <line x1="80" y1="120" x2="160" y2="120" class="wire" stroke="#4ade80" stroke-width="2"/>
-          <line x1="160" y1="120" x2="160" y2="100" class="wire" stroke="#4ade80" stroke-width="2"/>
-          <line x1="160" y1="100" x2="200" y2="100" class="wire" stroke="#4ade80" stroke-width="2"/>
-          <text x="130" y="112" fill="#4ade80" font-size="9" font-family="DM Sans">D2</text>
-
-          <line x1="80" y1="200" x2="140" y2="200" class="wire" stroke="#ef4444" stroke-width="2"/>
-          <line x1="140" y1="200" x2="140" y2="140" class="wire" stroke="#ef4444" stroke-width="2"/>
-          <line x1="140" y1="140" x2="200" y2="140" class="wire" stroke="#ef4444" stroke-width="2"/>
-          <text x="105" y="192" fill="#ef4444" font-size="9" font-family="DM Sans">D7</text>
-
-          <line x1="80" y1="270" x2="120" y2="270" class="wire" stroke="#4ade80" stroke-width="2"/>
-          <line x1="120" y1="270" x2="120" y2="160" class="wire" stroke="#4ade80" stroke-width="2"/>
-          <line x1="120" y1="160" x2="200" y2="160" class="wire" stroke="#4ade80" stroke-width="2"/>
-          <text x="85" y="262" fill="#4ade80" font-size="9" font-family="DM Sans">D6</text>
-
-          <line x1="80" y1="340" x2="100" y2="340" class="wire" stroke="#d4a017" stroke-width="2"/>
-          <line x1="100" y1="340" x2="100" y2="180" class="wire" stroke="#d4a017" stroke-width="2"/>
-          <line x1="100" y1="180" x2="200" y2="180" class="wire" stroke="#d4a017" stroke-width="2"/>
-          <text x="60" y="332" fill="#d4a017" font-size="9" font-family="DM Sans">D8</text>
-
-          <line x1="200" y1="80" x2="200" y2="60" class="wire" stroke="#ff7b72" stroke-width="2"/>
-          <line x1="200" y1="60" x2="340" y2="60" class="wire" stroke="#ff7b72" stroke-width="2"/>
-          <text x="260" y="52" fill="#ff7b72" font-size="9" font-family="DM Sans">5V</text>
-
-          <line x1="200" y1="280" x2="200" y2="370" class="wire" stroke="#8b949e" stroke-width="2"/>
-          <line x1="200" y1="370" x2="340" y2="370" class="wire" stroke="#8b949e" stroke-width="2"/>
-          <text x="260" y="385" fill="#8b949e" font-size="9" font-family="DM Sans">GND</text>
-
-          <rect x="200" y="80" width="140" height="200" rx="10" fill="url(#arduinoGrad)" stroke="#2a5a9e" stroke-width="2"/>
+        <svg width="100%" viewBox="0 0 480 420" role="img" aria-label="Wiring diagram: PIR sensor, green and red LEDs with 220 ohm resistors, and an active buzzer connected to an Arduino Uno" style="position: relative; z-index: 1;" font-family="DM Sans, sans-serif">
           <defs>
             <linearGradient id="arduinoGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#1a3a6e"/>
               <stop offset="100%" stop-color="#0f2850"/>
             </linearGradient>
           </defs>
-          <rect x="260" y="72" width="30" height="12" rx="2" fill="#888"/>
-          <text x="270" y="155" fill="#fff" font-size="11" font-family="DM Sans" font-weight="700" text-anchor="middle">ARDUINO</text>
-          <text x="270" y="170" fill="#888" font-size="9" font-family="DM Sans" text-anchor="middle">UNO</text>
-          <rect x="240" y="190" width="60" height="30" rx="3" fill="#222" stroke="#444" stroke-width="1"/>
-          <text x="270" y="209" fill="#666" font-size="6" font-family="monospace" text-anchor="middle">ATmega328</text>
 
-          <text x="205" y="105" fill="#d4a017" font-size="8" font-family="monospace">D2</text>
-          <text x="205" y="145" fill="#d4a017" font-size="8" font-family="monospace">D6</text>
-          <text x="205" y="165" fill="#d4a017" font-size="8" font-family="monospace">D7</text>
-          <text x="205" y="185" fill="#d4a017" font-size="8" font-family="monospace">D8</text>
+          <!-- Arduino Uno -->
+          <rect x="380" y="30" width="30" height="12" rx="2" fill="#888"/>
+          <rect x="330" y="40" width="130" height="360" rx="10" fill="url(#arduinoGrad)" stroke="#2a5a9e" stroke-width="2"/>
+          <text x="395" y="66" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">ARDUINO UNO</text>
+          <rect x="365" y="170" width="70" height="36" rx="3" fill="#222" stroke="#444"/>
+          <text x="400" y="192" fill="#777" font-size="9" font-family="monospace" text-anchor="middle">ATmega328</text>
 
-          <rect x="30" y="95" width="50" height="50" rx="8" fill="rgba(45,138,78,0.15)" stroke="#4ade80" stroke-width="1.5"/>
-          <text x="55" y="117" fill="#4ade80" font-size="8" font-family="DM Sans" text-anchor="middle" font-weight="600">PIR</text>
-          <text x="55" y="132" fill="#8b949e" font-size="7" font-family="DM Sans" text-anchor="middle">Sensor</text>
+          <g font-size="11" font-family="monospace" fill="#d4a017">
+            <circle cx="330" cy="85" r="3"/><text x="340" y="89">D2</text>
+            <circle cx="330" cy="165" r="3"/><text x="340" y="169">D6</text>
+            <circle cx="330" cy="235" r="3"/><text x="340" y="239">D7</text>
+            <circle cx="330" cy="310" r="3"/><text x="340" y="314">D8</text>
+            <circle cx="330" cy="350" r="3" fill="#ff7b72"/><text x="340" y="354" fill="#ff7b72">5V</text>
+            <circle cx="330" cy="375" r="3" fill="#8b949e"/><text x="340" y="379" fill="#8b949e">GND</text>
+          </g>
 
-          <circle cx="55" cy="200" r="20" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5"/>
-          <circle cx="55" cy="200" r="8" fill="#ef4444" opacity="0.6" id="circuitRedLed"/>
-          <text x="55" y="230" fill="#8b949e" font-size="7" font-family="DM Sans" text-anchor="middle">Red LED</text>
+          <!-- Arduino power pins -->
+          <line x1="330" y1="350" x2="300" y2="350" stroke="#ff7b72" stroke-width="2"/>
+          <text x="294" y="354" fill="#ff7b72" font-size="11" font-weight="700" text-anchor="end">5V</text>
+          <line x1="330" y1="375" x2="300" y2="375" stroke="#8b949e" stroke-width="2"/>
+          <text x="294" y="379" fill="#8b949e" font-size="11" font-weight="700" text-anchor="end">GND</text>
 
-          <circle cx="55" cy="270" r="20" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="1.5"/>
-          <circle cx="55" cy="270" r="8" fill="#4ade80" opacity="0.6" id="circuitGreenLed"/>
-          <text x="55" y="300" fill="#8b949e" font-size="7" font-family="DM Sans" text-anchor="middle">Green LED</text>
+          <!-- PIR sensor -->
+          <rect x="60" y="45" width="90" height="80" rx="8" fill="rgba(45,138,78,0.15)" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="105" y="82" fill="#4ade80" font-size="13" font-weight="700" text-anchor="middle">PIR</text>
+          <text x="105" y="98" fill="#8b949e" font-size="10" text-anchor="middle">HC-SR501</text>
+          <text x="66" y="66" fill="#ff7b72" font-size="9">VCC</text>
+          <text x="66" y="112" fill="#8b949e" font-size="9">GND</text>
+          <text x="144" y="89" fill="#4ade80" font-size="9" text-anchor="end">OUT</text>
+          <line x1="60" y1="63" x2="38" y2="63" stroke="#ff7b72" stroke-width="2"/>
+          <text x="4" y="67" fill="#ff7b72" font-size="11" font-weight="700">5V</text>
+          <line x1="60" y1="109" x2="38" y2="109" stroke="#8b949e" stroke-width="2"/>
+          <text x="4" y="113" fill="#8b949e" font-size="11" font-weight="700">GND</text>
+          <line x1="150" y1="85" x2="330" y2="85" class="wire" stroke="#4ade80" stroke-width="2"/>
+          <text x="240" y="77" fill="#4ade80" font-size="10" text-anchor="middle">OUT to D2</text>
 
-          <rect x="30" y="320" width="50" height="40" rx="6" fill="rgba(212,160,23,0.1)" stroke="#d4a017" stroke-width="1.5"/>
-          <text x="55" y="340" fill="#d4a017" font-size="8" font-family="DM Sans" text-anchor="middle" font-weight="600">Buzzer</text>
-          <text x="55" y="353" fill="#8b949e" font-size="7" font-family="DM Sans" text-anchor="middle">Speaker</text>
+          <!-- Green LED + resistor (D6) -->
+          <line x1="330" y1="165" x2="210" y2="165" class="wire" stroke="#4ade80" stroke-width="2"/>
+          <rect x="170" y="157" width="40" height="16" rx="3" fill="#3a2a0a" stroke="#d4a017"/>
+          <text x="190" y="150" fill="#d4a017" font-size="10" text-anchor="middle">220&#937;</text>
+          <line x1="170" y1="165" x2="136" y2="165" class="wire" stroke="#4ade80" stroke-width="2"/>
+          <circle cx="120" cy="165" r="16" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="1.5"/>
+          <circle cx="120" cy="165" r="7" fill="#4ade80" opacity="0.6" id="circuitGreenLed"/>
+          <text x="98" y="169" fill="#8b949e" font-size="11" text-anchor="end">Green LED</text>
+          <line x1="120" y1="181" x2="120" y2="198" stroke="#8b949e" stroke-width="2"/>
+          <text x="120" y="212" fill="#8b949e" font-size="11" font-weight="700" text-anchor="middle">GND</text>
 
-          <rect x="330" y="40" width="50" height="40" rx="6" fill="rgba(255,123,114,0.1)" stroke="#ff7b72" stroke-width="1.5"/>
-          <text x="355" y="57" fill="#ff7b72" font-size="8" font-family="DM Sans" text-anchor="middle" font-weight="700">+5V</text>
-          <text x="355" y="70" fill="#8b949e" font-size="7" font-family="DM Sans" text-anchor="middle">Power</text>
+          <!-- Red LED + resistor (D7) -->
+          <line x1="330" y1="235" x2="210" y2="235" class="wire" stroke="#ef4444" stroke-width="2"/>
+          <rect x="170" y="227" width="40" height="16" rx="3" fill="#3a2a0a" stroke="#d4a017"/>
+          <text x="190" y="220" fill="#d4a017" font-size="10" text-anchor="middle">220&#937;</text>
+          <line x1="170" y1="235" x2="136" y2="235" class="wire" stroke="#ef4444" stroke-width="2"/>
+          <circle cx="120" cy="235" r="16" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="1.5"/>
+          <circle cx="120" cy="235" r="7" fill="#ef4444" opacity="0.2" id="circuitRedLed"/>
+          <text x="98" y="239" fill="#8b949e" font-size="11" text-anchor="end">Red LED</text>
+          <line x1="120" y1="251" x2="120" y2="268" stroke="#8b949e" stroke-width="2"/>
+          <text x="120" y="282" fill="#8b949e" font-size="11" font-weight="700" text-anchor="middle">GND</text>
 
-          <rect x="330" y="350" width="50" height="40" rx="6" fill="rgba(139,148,158,0.1)" stroke="#8b949e" stroke-width="1.5"/>
-          <text x="355" y="367" fill="#8b949e" font-size="8" font-family="DM Sans" text-anchor="middle" font-weight="700">GND</text>
-          <text x="355" y="380" fill="#8b949e" font-size="7" font-family="DM Sans" text-anchor="middle">Ground</text>
+          <!-- Buzzer (D8) -->
+          <line x1="330" y1="310" x2="130" y2="310" class="wire" stroke="#d4a017" stroke-width="2"/>
+          <rect x="60" y="288" width="70" height="44" rx="6" fill="rgba(212,160,23,0.1)" stroke="#d4a017" stroke-width="1.5"/>
+          <text x="95" y="307" fill="#d4a017" font-size="11" font-weight="700" text-anchor="middle">Buzzer</text>
+          <text x="95" y="322" fill="#8b949e" font-size="9" text-anchor="middle">active, 5V</text>
+          <text x="136" y="304" fill="#d4a017" font-size="12" font-weight="700">+</text>
+          <line x1="95" y1="332" x2="95" y2="350" stroke="#8b949e" stroke-width="2"/>
+          <text x="95" y="364" fill="#8b949e" font-size="11" font-weight="700" text-anchor="middle">GND</text>
+
+          <text x="20" y="408" fill="#8b949e" font-size="10">Labels with the same name (5V, GND) are connected together.</text>
         </svg>
       </div>
 
@@ -1225,7 +1285,7 @@
             <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(45,138,78,0.15); display: flex; align-items: center; justify-content: center; color: var(--green-light);"><i class="fas fa-eye"></i></div>
             <div style="flex: 1;">
               <div style="font-weight: 600; font-size: 0.95rem;">PIR Motion Sensor</div>
-              <div style="color: var(--fg-muted); font-size: 0.82rem;">Motion detection</div>
+              <div style="color: var(--fg-muted); font-size: 0.82rem;">Motion detection (OUT pin; VCC to 5V, GND to GND)</div>
             </div>
             <div style="background: rgba(212,160,23,0.12); color: var(--accent); padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">D2</div>
           </div>
@@ -1233,7 +1293,7 @@
             <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(239,68,68,0.15); display: flex; align-items: center; justify-content: center; color: var(--red-alert);"><i class="fas fa-circle"></i></div>
             <div style="flex: 1;">
               <div style="font-weight: 600; font-size: 0.95rem;">LED (Red)</div>
-              <div style="color: var(--fg-muted); font-size: 0.82rem;">Alert indicator</div>
+              <div style="color: var(--fg-muted); font-size: 0.82rem;">Alert indicator (via 220&Omega; resistor)</div>
             </div>
             <div style="background: rgba(212,160,23,0.12); color: var(--accent); padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">D7</div>
           </div>
@@ -1241,7 +1301,7 @@
             <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(74,222,128,0.15); display: flex; align-items: center; justify-content: center; color: var(--green-light);"><i class="fas fa-circle"></i></div>
             <div style="flex: 1;">
               <div style="font-weight: 600; font-size: 0.95rem;">LED (Green)</div>
-              <div style="color: var(--fg-muted); font-size: 0.82rem;">Normal status indicator</div>
+              <div style="color: var(--fg-muted); font-size: 0.82rem;">Normal status (via 220&Omega; resistor)</div>
             </div>
             <div style="background: rgba(212,160,23,0.12); color: var(--accent); padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">D6</div>
           </div>
@@ -1249,7 +1309,7 @@
             <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(212,160,23,0.15); display: flex; align-items: center; justify-content: center; color: var(--accent);"><i class="fas fa-volume-up"></i></div>
             <div style="flex: 1;">
               <div style="font-weight: 600; font-size: 0.95rem;">Buzzer</div>
-              <div style="color: var(--fg-muted); font-size: 0.82rem;">Sound alert</div>
+              <div style="color: var(--fg-muted); font-size: 0.82rem;">Active buzzer (+ to D8, other leg to GND)</div>
             </div>
             <div style="background: rgba(212,160,23,0.12); color: var(--accent); padding: 4px 14px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">D8</div>
           </div>
@@ -1265,6 +1325,17 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="glass-card reveal" style="margin-top: 2rem; border-left: 3px solid var(--green-light);">
+      <h4 style="color: var(--green-light); margin-bottom: 0.8rem; font-size: 1.1rem;">
+        <i class="fas fa-plug" style="margin-right: 6px;"></i> Wiring Notes
+      </h4>
+      <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; color: var(--fg-muted); font-size: 0.92rem;">
+        <li><span style="color: var(--green-light); margin-right: 8px;">&#9679;</span> <strong>LEDs:</strong> Arduino pin &rarr; 220&Omega; resistor &rarr; LED long leg (+). Short leg (&minus;) goes to GND.</li>
+        <li><span style="color: var(--green-light); margin-right: 8px;">&#9679;</span> <strong>PIR (HC-SR501):</strong> VCC &rarr; 5V, OUT &rarr; D2, GND &rarr; GND. Check the pin names printed on the board.</li>
+        <li><span style="color: var(--green-light); margin-right: 8px;">&#9679;</span> <strong>Buzzer:</strong> Use an <em>active</em> buzzer. Longer leg (+) &rarr; D8, other leg &rarr; GND. A passive buzzer needs <code>tone()</code> instead.</li>
+        <li><span style="color: var(--green-light); margin-right: 8px;">&#9679;</span> <strong>Breadboard tip:</strong> Connect Arduino 5V and GND to the breadboard power rails, then branch from the rails.</li>
+      </ul>
     </div>
   </section>
 
@@ -1386,14 +1457,19 @@
           <i class="fas fa-copy" style="margin-right: 4px;"></i> Copy
         </button>
       </div>
-      <div class="code-body" id="codeBody">
-<span class="cm">// Smart Field Alert System</span>
-<span class="cm">// PIR Sensor + LED + Buzzer</span>
+      <div class="code-body" id="codeBody"><span class="cm">// Smart Field Alert System</span>
+<span class="cm">// PIR Sensor (HC-SR501) + Red/Green LED + Active Buzzer</span>
+<span class="cm">// Wiring: PIR OUT -&gt; D2 | Green LED -&gt; D6 | Red LED -&gt; D7 | Buzzer -&gt; D8</span>
+<span class="cm">// Each LED needs a 220 ohm resistor in series.</span>
 
 <span class="kw">#define</span> <span class="def">PIR</span>     <span class="num">2</span>
 <span class="kw">#define</span> <span class="def">RED</span>     <span class="num">7</span>
 <span class="kw">#define</span> <span class="def">GREEN</span>   <span class="num">6</span>
 <span class="kw">#define</span> <span class="def">BUZZER</span>  <span class="num">8</span>
+
+<span class="kw">#define</span> <span class="def">WARMUP_SECONDS</span> <span class="num">30</span>
+
+<span class="type">bool</span> lastMotion = false;
 
 <span class="type">void</span> <span class="fn">setup</span>() {
   <span class="fn">pinMode</span>(<span class="def">PIR</span>, <span class="def">INPUT</span>);
@@ -1401,25 +1477,42 @@
   <span class="fn">pinMode</span>(<span class="def">GREEN</span>, <span class="def">OUTPUT</span>);
   <span class="fn">pinMode</span>(<span class="def">BUZZER</span>, <span class="def">OUTPUT</span>);
   <span class="fn">Serial</span>.<span class="fn">begin</span>(<span class="num">9600</span>);
+
+  <span class="cm">// PIR needs time to calibrate after power-up.</span>
+  <span class="cm">// The green LED blinks while the sensor warms up.</span>
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"PIR warming up..."</span>);
+  <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; <span class="def">WARMUP_SECONDS</span>; i++) {
+    <span class="fn">digitalWrite</span>(<span class="def">GREEN</span>, <span class="def">HIGH</span>);
+    <span class="fn">delay</span>(<span class="num">500</span>);
+    <span class="fn">digitalWrite</span>(<span class="def">GREEN</span>, <span class="def">LOW</span>);
+    <span class="fn">delay</span>(<span class="num">500</span>);
+  }
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"System ready. Field is secure."</span>);
 }
 
 <span class="type">void</span> <span class="fn">loop</span>() {
-  <span class="type">int</span> motion = <span class="fn">digitalRead</span>(<span class="def">PIR</span>);
+  <span class="type">bool</span> motion = (<span class="fn">digitalRead</span>(<span class="def">PIR</span>) == <span class="def">HIGH</span>);
 
-  <span class="kw">if</span> (motion == <span class="def">HIGH</span>) {
-    <span class="cm">// Motion detected — Alert!</span>
+  <span class="kw">if</span> (motion) {
+    <span class="cm">// Motion detected: alert!</span>
     <span class="fn">digitalWrite</span>(<span class="def">RED</span>, <span class="def">HIGH</span>);
     <span class="fn">digitalWrite</span>(<span class="def">GREEN</span>, <span class="def">LOW</span>);
     <span class="fn">digitalWrite</span>(<span class="def">BUZZER</span>, <span class="def">HIGH</span>);
-    <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"Alert! Motion Detected!"</span>);
+    <span class="kw">if</span> (!lastMotion) {
+      <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"Alert! Motion Detected!"</span>);
+    }
   } <span class="kw">else</span> {
     <span class="cm">// Normal condition</span>
     <span class="fn">digitalWrite</span>(<span class="def">RED</span>, <span class="def">LOW</span>);
     <span class="fn">digitalWrite</span>(<span class="def">GREEN</span>, <span class="def">HIGH</span>);
     <span class="fn">digitalWrite</span>(<span class="def">BUZZER</span>, <span class="def">LOW</span>);
+    <span class="kw">if</span> (lastMotion) {
+      <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"Field clear."</span>);
+    }
   }
 
-  <span class="fn">delay</span>(<span class="num">500</span>);
+  lastMotion = motion;
+  <span class="fn">delay</span>(<span class="num">100</span>);
 }
       </div>
     </div>
@@ -1628,7 +1721,8 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        const target = href === '#' ? document.body : document.querySelector(href);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -1681,6 +1775,7 @@
     let isAlert = false;
     let autoMode = false;
     let autoInterval = null;
+    let alertTimer = null;
     let simSeconds = 0;
 
     // Simulation timer
@@ -1734,16 +1829,19 @@
 
       // Auto-reset after 5 seconds (when not in auto mode)
       if (!autoMode) {
-        setTimeout(() => { resetSystem(); }, 5000);
+        clearTimeout(alertTimer);
+        alertTimer = setTimeout(resetSystem, 5000);
       }
     }
 
     // Reset system
     function resetSystem() {
+      clearTimeout(alertTimer);
       isAlert = false;
 
       simSensor.classList.remove('detection');
       simIntruder.classList.remove('moving');
+      void simIntruder.offsetWidth; // force reflow so the walk animation can restart
       simAlertOverlay.classList.remove('active');
 
       indRed.classList.remove('on');
@@ -1786,58 +1884,25 @@
     });
 
     function scheduleAutoTrigger() {
+      clearTimeout(autoInterval);
       if (!autoMode) return;
-      const delay = 4000 + Math.random() * 6000;
       autoInterval = setTimeout(() => {
         if (!autoMode) return;
-        if (isAlert) {
+        if (!isAlert) triggerAlert();
+        // a single timer variable, so turning Auto Mode off cancels everything
+        autoInterval = setTimeout(() => {
+          if (!autoMode) return;
           resetSystem();
-          setTimeout(scheduleAutoTrigger, 2000);
-        } else {
-          triggerAlert();
-          setTimeout(() => {
-            if (autoMode) {
-              resetSystem();
-              setTimeout(scheduleAutoTrigger, 2000);
-            }
-          }, 3000);
-        }
-      }, delay);
+          scheduleAutoTrigger();
+        }, 3000);
+      }, 4000 + Math.random() * 6000);
     }
 
     /* ================================================
        Code copy button
        ================================================ */
     document.getElementById('copyBtn').addEventListener('click', function () {
-      const rawCode = `#define PIR     2
-#define RED     7
-#define GREEN   6
-#define BUZZER  8
-
-void setup() {
-  pinMode(PIR, INPUT);
-  pinMode(RED, OUTPUT);
-  pinMode(GREEN, OUTPUT);
-  pinMode(BUZZER, OUTPUT);
-  Serial.begin(9600);
-}
-
-void loop() {
-  int motion = digitalRead(PIR);
-
-  if (motion == HIGH) {
-    digitalWrite(RED, HIGH);
-    digitalWrite(GREEN, LOW);
-    digitalWrite(BUZZER, HIGH);
-    Serial.println("Alert! Motion Detected!");
-  } else {
-    digitalWrite(RED, LOW);
-    digitalWrite(GREEN, HIGH);
-    digitalWrite(BUZZER, LOW);
-  }
-
-  delay(500);
-}`;
+      const rawCode = document.getElementById('codeBody').textContent.trim();
 
       navigator.clipboard.writeText(rawCode).then(() => {
         this.innerHTML = '<i class="fas fa-check" style="margin-right: 4px;"></i> Copied!';
@@ -1857,6 +1922,20 @@ void loop() {
       if (e.target.closest('.sim-btn')) return;
       if (!isAlert) triggerAlert();
     });
+
+    /* ================================================
+       Mobile menu
+       ================================================ */
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }));
   </script>
 </body>
 </html>
